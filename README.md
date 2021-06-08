@@ -10,7 +10,7 @@ This terraform provider allows to perform Create ,Read ,Update, Delete, Import a
 * [Zoom](https://zoom.us/) Pro/Premium account 
 
 
-## Setup Zoom Account
+## Zoom Setup
  :heavy_exclamation_mark:  [IMPORTANT] : This provider can only be successfully tested on a premium paid zoom account. <br><br>
 
 1. Create a zoom account with paid subscription (PRO Plan/Business Account). (https://zoom.us/)<br>
@@ -31,7 +31,7 @@ go mod tidy
 ```
 4. Run `go mod vendor` to create a vendor directory that contains all the provider's dependencies. <br>
 
-## Installation
+## Managing plugins for terraform
 1. Run the following command to create a vendor subdirectory which will comprise of  all provider dependencies. <br>
 ```
 ~/.terraform.d/plugins/${host_name}/${namespace}/${type}/${version}/${target}
@@ -56,7 +56,7 @@ Otherwise you can manually move the file from current directory to destination d
 2. move binary `~/.terraform.d/plugins/[architecture name]/`
 
 
-## Run the Terraform provider
+## Working with terraform
 
 #### Create User
 1. Add the user email, first name, last name, status, type in the respective field in `main.tf`
@@ -125,14 +125,19 @@ output "user1" {
 
 ## Argument Reference
 
-* `apikey`     - The Zoom API Key
-* `apisecret`  - The Zoom API Secret
-* `email`      - The email id associated with the user account.
-* `first_name` - First name of the User.
-* `last_name`  - Last Name / Family Name / Surname of the User.
-* `status`     - User account activation status.
-* `type`       - User account type. (1=Basic, 2=License, 3=On-prem)
-* `id`         - Unique ID of the User which is same as Email ID.
+* `apikey`(Required,string)     - The Zoom API Key
+* `apisecret`(Required,string)  - The Zoom API Secret
+* `email`(Required,string)      - The email id associated with the user account.
+* `first_name`(Required,string) - First name of the User.
+* `last_name`(Required,string)  - Last Name / Family Name / Surname of the User.
+* `status`(Optional,string)     - User account activation status ie.(activate,deactivate).
+* `license_type`(Required,integer)       - User account type ie.(1=Basic, 2=License, 3=On-prem)
+* `job_title`(Optional,string)         - Job title of the particular user.
+* `department`(Optional,string)         - Department of the particular user.
+* `location`(Optional,string)         - Department of the particular user.
+* `id`(Computed,string)         - Unique ID of the User which is same as Email ID.
+* `pmi`(Computed,integer)         - Generated pmi no of the user.
+* `role_name`(Computed,string)         - Current role of the user ie.(Admin,Member).
 
 
 
