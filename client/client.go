@@ -12,15 +12,15 @@ import (
 )
 
 type User struct {
-	Id        string `json:"id"`
-	Email   string `json:"email"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Status    string  `json:"status"`
-	Type      int `json:"type"`
-	Pmi       int `json:"pmi"`
+	Id          string `json:"id"`
+	Email       string `json:"email"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Status      string  `json:"status"`
+	Type        int `json:"type"`
+	Pmi         int `json:"pmi"`
 	RoleName    string `json:"role_name"`
-	Department    string `json:"dept"`
+	Department  string `json:"dept"`
 	JobTitle    string `json:"job_title"`
 	Location    string `json:"location"`
 }
@@ -31,17 +31,17 @@ type NewUser struct {
 }
 
 type UserInfo struct {
-	Email   string `json:"email"`
+	Email     string `json:"email"`
 	Type      int    `json:"type"`
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 }
 
 type UpdateUser struct {
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	Type      int `json:"type"`
-	Department    string `json:"dept"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Type        int `json:"type"`
+	Department  string `json:"dept"`
 	JobTitle    string `json:"job_title"`
 	Location    string `json:"location"`
 }
