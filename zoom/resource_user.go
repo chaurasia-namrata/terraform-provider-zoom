@@ -47,7 +47,6 @@ func validateEmail(v interface{}, k string) (ws []string, es []error) {
 		return warns, errs
 	}
 	return
-
 }
 
 func resourceUser() *schema.Resource {
