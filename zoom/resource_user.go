@@ -137,12 +137,15 @@ func resourceUserRead(ctx context.Context,d *schema.ResourceData, m interface{})
 	userId := d.Id()
 	user, err := apiClient.GetItem(userId)
 	if err != nil {
-		log.Println("[ERROR]: ",err)
-		if strings.Contains(err.Error(), "not found") {
+		if strings.Contains(err.Error(), "\"responseCode\":404")==true {
 			d.SetId("")
-		} else {
-			return diag.FromErr(err)
+			diags = append(diags, diag.Diagnostic{
+				Severity: diag.Warning,
+				Summary:  "User does not exist. Create a new user with given details.",
+			})
+			return diags
 		}
+		return diag.FromErr(err)
 	}
 	if len(user.Email) > 0{
 		d.SetId(user.Email)
