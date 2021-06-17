@@ -9,7 +9,6 @@ import (
 	"strings"
 	"log"
 	"io/ioutil"
-	
 )
 
 type User struct {
@@ -239,8 +238,6 @@ func (c *Client) deletehttpRequest(path, method string, body bytes.Buffer) (clos
 		log.Println("Broken Request")
 		return nil, fmt.Errorf("Error : %v",Errors[resp.StatusCode] )
     }
-
-
 }
 
 func (c *Client) DeactivateUser(userId string, status string) error {
@@ -264,3 +261,11 @@ func (c *Client) DeactivateUser(userId string, status string) error {
 	return nil
 }
 
+func (c *Client) IsRetry(err error) bool {
+	if err != nil {
+		if strings.Contains(err.Error(), "\"responseCode\":503")==true {
+			return true
+		}
+	}
+	return false
+}
