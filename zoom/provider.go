@@ -9,17 +9,16 @@ import (
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
-			"apisecret": &schema.Schema{
+			"zoom_api_secret": &schema.Schema{
 				Type:      schema.TypeString,
 				Optional:  true,
 				Sensitive: true,
-				DefaultFunc: schema.EnvDefaultFunc("API_SECRET", ""),
 			},
-			"apikey": &schema.Schema{
+			"zoom_api_key": &schema.Schema{
 				Type:      schema.TypeString,
+
 				Optional:  true,
 				Sensitive: true,
-				DefaultFunc: schema.EnvDefaultFunc("API_KEY", ""),
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
@@ -33,6 +32,7 @@ func Provider() *schema.Provider {
 }
 
 func providerConfigure(d *schema.ResourceData) (interface{}, error) {
-	token := tkn.GenerateToken(d.Get("apisecret").(string),d.Get("apikey").(string))
+	token := tkn.TokenGenerate(d.Get("zoom_api_secret").(string),d.Get("zoom_api_key").(string))
 	return client.NewClient(token), nil
+
 }
