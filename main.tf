@@ -8,8 +8,8 @@ terraform {
 }
 
 provider "zoom" { 
-  #set API_SECRET environmnemt variable
-  #set API_KEY environmnemt variable
+  zoom_api_key = "[ZOOM_API_KEY]"
+  zoom_api_secret = "[ZOOM_API_SECRET]"
 }
 
 resource "zoom_user" "user1" {
