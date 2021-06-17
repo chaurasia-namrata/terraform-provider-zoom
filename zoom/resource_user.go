@@ -55,7 +55,8 @@ func resourceUser() *schema.Resource {
 		UpdateContext: resourceUserUpdate,
 		DeleteContext: resourceUserDelete,
 		Importer: &schema.ResourceImporter{
-			State: schema.ImportStatePassthrough,
+			// State: schema.ImportStatePassthrough,
+			StateContext: resourceUserImporter,
 		},
 		Schema: map[string]*schema.Schema{
 
@@ -137,6 +138,12 @@ func resourceUserRead(ctx context.Context,d *schema.ResourceData, m interface{})
 	userId := d.Id()
 	user, err := apiClient.GetItem(userId)
 	if err != nil {
+		// log.Println("[ERROR]: ",err)
+		// if strings.Contains(err.Error(), "not found") {
+		// 	d.SetId("")
+		// } else {
+		// 	return diag.FromErr(err)
+		// }
 		if strings.Contains(err.Error(), "\"responseCode\":404")==true {
 			d.SetId("")
 			diags = append(diags, diag.Diagnostic{
@@ -209,3 +216,22 @@ func resourceUserDelete(ctx context.Context,d *schema.ResourceData, m interface{
 	return diags
 }
 
+func resourceUserImporter(ctx context.Context, d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	apiClient := m.(*client.Client)
+	userId := d.Id()
+	user, err := apiClient.GetItem(userId)
+	if err!=nil{
+		return nil, err
+	}
+	d.Set("email", user.Email)
+		d.Set("first_name", user.FirstName)
+		d.Set("last_name", user.LastName)
+		d.Set("license_type", user.Type)
+		d.Set("pmi",user.Pmi)
+		d.Set("status",user.Status)
+		d.Set("role_name", user.RoleName)
+		d.Set("department",user.Department)
+		d.Set("job_title", user.JobTitle)
+		d.Set("location", user.Location)
+	return []*schema.ResourceData{d}, nil
+}
