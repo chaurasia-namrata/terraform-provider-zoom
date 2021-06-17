@@ -10,7 +10,7 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-func GenerateToken(apiSecret string, apiKey string) string {
+func TokenGenerate(apiSecret string, apiKey string) string {
 	var jwtKey = []byte(apiSecret)
 	_, present := os.LookupEnv("ZOOM_TOKEN")
 	claims := &Claims{}
@@ -29,9 +29,7 @@ func GenerateToken(apiSecret string, apiKey string) string {
 	apikey := apiKey
 	expirationTime := time.Now().Add(20 * time.Minute)
 	claims = &Claims{
-
 		StandardClaims: jwt.StandardClaims{
-
 			Audience:  " ",
 			Issuer:    apikey,
 			ExpiresAt: expirationTime.Unix(),
