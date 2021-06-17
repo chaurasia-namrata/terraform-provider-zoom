@@ -120,7 +120,6 @@ func (c *Client) httpRequest(method string, body bytes.Buffer, item *User) (clos
     } else {
 		return nil, fmt.Errorf("Error : %v",Errors[resp.StatusCode] )
     }
-
 }
 
 func (c *Client) GetItem(name string) (*User, error) {
