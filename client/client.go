@@ -54,7 +54,7 @@ func init() {
 	Errors[400] = "Bad Request, StatusCode = 400"
 	Errors[404] = "User Does Not Exist , StatusCode = 404"
 	Errors[409] = "User Already Exist, StatusCode = 409"
-	Errors[401] = "Unautharized Access, StatusCode = 401"
+	Errors[401] = "Unauthorized Access, StatusCode = 401"
 	Errors[429] = "User Has Sent Too Many Request, StatusCode = 429"
 }
 
