@@ -129,8 +129,8 @@ output "user1" {
 
 ## Argument Reference
 
-* `apikey`(Required,string)     - The Zoom API Key
-* `apisecret`(Required,string)  - The Zoom API Secret
+* `zoom_api_key`(Required,string)     - The Zoom API Key
+* `zoom_api_secret`(Required,string)  - The Zoom API Secret
 * `email`(Required,string)      - The email id associated with the user account.
 * `first_name`(Required,string) - First name of the User.
 * `last_name`(Required,string)  - Last Name / Family Name / Surname of the User.
