@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"regexp"
 	"log"
+	"time"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"context"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 )
@@ -55,7 +57,6 @@ func resourceUser() *schema.Resource {
 		UpdateContext: resourceUserUpdate,
 		DeleteContext: resourceUserDelete,
 		Importer: &schema.ResourceImporter{
-			// State: schema.ImportStatePassthrough,
 			StateContext: resourceUserImporter,
 		},
 		Schema: map[string]*schema.Schema{
@@ -107,7 +108,6 @@ func resourceUser() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 			},
-
 		},
 	}
 
@@ -122,7 +122,22 @@ func resourceUserCreate(ctx context.Context,d *schema.ResourceData, m interface{
 		LastName:  d.Get("last_name").(string),
 		Type:      d.Get("license_type").(int),
 	}
-	err := apiClient.NewItem(&user)
+
+	var err error
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		if err = apiClient.NewItem(&user); err != nil {
+			if apiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
+		return nil
+	})
+	if retryErr != nil {
+		time.Sleep(2 * time.Second)
+		return diag.FromErr(retryErr)
+	}
+
 	if err != nil {
 		log.Println("[ERROR]: ",err)
 		return diag.FromErr(err)
@@ -136,36 +151,36 @@ func resourceUserRead(ctx context.Context,d *schema.ResourceData, m interface{})
 	var diags diag.Diagnostics
 	apiClient := m.(*client.Client)
 	userId := d.Id()
-	user, err := apiClient.GetItem(userId)
-	if err != nil {
-		// log.Println("[ERROR]: ",err)
-		// if strings.Contains(err.Error(), "not found") {
-		// 	d.SetId("")
-		// } else {
-		// 	return diag.FromErr(err)
-		// }
-		if strings.Contains(err.Error(), "\"responseCode\":404")==true {
+
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		user, err := apiClient.GetItem(userId)
+		if err != nil {
+			if apiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
+		if len(user.Email) > 0{
+			d.SetId(user.Email)
+			d.Set("email", user.Email)
+			d.Set("first_name", user.FirstName)
+			d.Set("last_name", user.LastName)
+			d.Set("license_type", user.Type)
+			d.Set("pmi",user.Pmi)
+			d.Set("status",user.Status)
+			d.Set("role_name", user.RoleName)
+			d.Set("department",user.Department)
+			d.Set("job_title", user.JobTitle)
+			d.Set("location", user.Location)
+		}
+		return nil
+	})
+	if retryErr!=nil {
+		if strings.Contains(retryErr.Error(), "User Does Not Exist")==true {
 			d.SetId("")
-			diags = append(diags, diag.Diagnostic{
-				Severity: diag.Warning,
-				Summary:  "User does not exist. Create a new user with given details.",
-			})
 			return diags
 		}
-		return diag.FromErr(err)
-	}
-	if len(user.Email) > 0{
-		d.SetId(user.Email)
-		d.Set("email", user.Email)
-		d.Set("first_name", user.FirstName)
-		d.Set("last_name", user.LastName)
-		d.Set("license_type", user.Type)
-		d.Set("pmi",user.Pmi)
-		d.Set("status",user.Status)
-		d.Set("role_name", user.RoleName)
-		d.Set("department",user.Department)
-		d.Set("job_title", user.JobTitle)
-		d.Set("location", user.Location)
+		return diag.FromErr(retryErr)
 	}
 	return diags
 }
@@ -195,23 +210,51 @@ func resourceUserUpdate(ctx context.Context,d *schema.ResourceData, m interface{
 	status := d.Get("status").(string)
 	errDeac := apiClient.DeactivateUser(user.Email, status)
 	log.Println(errDeac)
-	err := apiClient.UpdateItem(&user)
+
+	var err error
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		if err = apiClient.UpdateItem(&user); err != nil {
+			if apiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
+		return nil
+	})
+	if retryErr != nil {
+		time.Sleep(2 * time.Second)
+		return diag.FromErr(retryErr)
+	}
 	if err != nil {
-		log.Printf("[Error] Error updating user :%s", err)
 		return diag.FromErr(err)
 	}
-	return resourceUserRead(ctx,d,m)
+	return diags
+
 }
 
 func resourceUserDelete(ctx context.Context,d *schema.ResourceData, m interface{}) diag.Diagnostics {
 	var diags diag.Diagnostics
 	apiClient := m.(*client.Client)
 	userId := d.Id()
-	err := apiClient.DeleteItem(userId)
+
+	var err error
+	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		if err = apiClient.DeleteItem(userId); err != nil {
+			if apiClient.IsRetry(err) {
+				return resource.RetryableError(err)
+			}
+			return resource.NonRetryableError(err)
+		}
+		return nil
+	})
+	if retryErr != nil {
+		time.Sleep(2 * time.Second)
+		return diag.FromErr(retryErr)
+	}
 	if err != nil {
-		log.Printf("[Error] Error deleting user :%s", err)
 		return diag.FromErr(err)
 	}
+
 	d.SetId("")
 	return diags
 }
