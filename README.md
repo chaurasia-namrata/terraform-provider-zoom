@@ -103,8 +103,8 @@ terraform {
 }
 
 provider "zoom" {
-  apikey = ""
-  apisecret = ""
+  zoom_api_key = "[ZOOM_API_KEY]"
+  zoom_api_secret = "[ZOOM_API_SECRET]"
 }
 
 resource "zoom_user" "user1" {
