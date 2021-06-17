@@ -96,8 +96,8 @@ Delete the resource block of the particular user from `main.tf` file and run `te
 terraform {
   required_providers {
     zoom = {
-      version = "0.2"
-      source  = "hashicorp.com/edu/zoom"
+      version = "1.0.1"
+      source  = "CleverTap/zoom"
     }
   }
 }
