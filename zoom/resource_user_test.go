@@ -29,7 +29,7 @@ resource "zoom_user" "user1" {
   email        = "tapendrakmr639@gmail.com"
   first_name   = "Ekansh"
   last_name    = "Singh"
-  license_type         =  1
+  license_type =  1
 }
 `)
 }
@@ -72,7 +72,7 @@ resource "zoom_user" "user1" {
 	first_name   = "Ekansh"
 	last_name    = "Singh"
 	status       = "activate"
-	license_type         =  1
+	license_type =  1
 }
 `)
 }
@@ -84,7 +84,7 @@ resource "zoom_user" "user1" {
 	first_name   = "Ekansh"
 	last_name    = "kumar"
 	status       = "activate"
-	license_type         =  1
+	license_type =  1
 }
 `)
 }

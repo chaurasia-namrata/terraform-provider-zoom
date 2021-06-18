@@ -4,11 +4,17 @@ import(
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"os"
+	"io/ioutil"
 	"log"
 )
 
 func init(){
-	os.Setenv("ZOOM_TOKEN", "")
+	file, err := os.Open("../acctoken.txt")
+    if err != nil {
+        log.Fatal(err)
+    }
+	token, err := ioutil.ReadAll(file)
+	os.Setenv("ZOOM_TOKEN", string(token))
 }
 
 func TestClient_GetItem(t *testing.T) {

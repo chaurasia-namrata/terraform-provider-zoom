@@ -90,7 +90,6 @@ func (c *Client) NewItem(item *User) error {
 }
 
 func (c *Client) httpRequest(method string, body bytes.Buffer, item *User) (closer io.ReadCloser, err error) {
-
 	userjson := NewUser{
 		Action: "create",
 		UserInfo: UserInfo{
@@ -262,7 +261,7 @@ func (c *Client) DeactivateUser(userId string, status string) error {
 
 func (c *Client) IsRetry(err error) bool {
 	if err != nil {
-		if strings.Contains(err.Error(), "\"responseCode\":503")==true {
+		if strings.Contains(err.Error(), "\"StatusCode\":429")==true {
 			return true
 		}
 	}
