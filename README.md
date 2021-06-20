@@ -74,7 +74,7 @@ For eg. `mkdir -p %APPDATA%/terraform.d/plugins/hashicorp.com/edu/zoom/0.2.0/win
 1. Update the data of the user in the `resource` block as show in [example usage](#example-usage) and run the basic terraform commands to update user. 
    User is not allowed to update `email`.
    
-2. Update the `status` of User from `active` to `inactive` or viceversa and run the basic terraform commands.
+2. Update the `status` of User from `active` to `deactivate` or viceversa and run the basic terraform commands.
 
 ### Read the User Data
 Add `data` and `output` blocks as shown in the [example usage](#example-usage) and run the basic terraform commands.
