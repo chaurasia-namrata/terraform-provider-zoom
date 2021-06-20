@@ -194,7 +194,6 @@ func resourceUserUpdate(ctx context.Context,d *schema.ResourceData, m interface{
 			Summary:  "User not allowed to change email",
 			Detail:   "User not allowed to change email",
 		})
-
 		return diags
 	}
 	user := client.User{
@@ -206,9 +205,25 @@ func resourceUserUpdate(ctx context.Context,d *schema.ResourceData, m interface{
 		JobTitle:  d.Get("job_title").(string),
 		Location:  d.Get("location").(string),
 	}
+
+	var err_deactivate error
 	status := d.Get("status").(string)
-	errDeac := apiClient.DeactivateUser(user.Email, status)
-	log.Println(errDeac)
+	retryErrDeac := resource.Retry(2*time.Minute, func() *resource.RetryError {
+		if err_deactivate = apiClient.DeactivateUser(user.Email, status); err_deactivate != nil {
+			if apiClient.IsRetry(err_deactivate) {
+				return resource.RetryableError(err_deactivate)
+			}
+			return resource.NonRetryableError(err_deactivate)
+		}
+		return nil
+	})
+	if retryErrDeac != nil {
+		time.Sleep(2 * time.Second)
+		return diag.FromErr(retryErrDeac)
+	}
+	if err_deactivate != nil {
+		return diag.FromErr(err_deactivate)
+	}
 
 	var err error
 	retryErr := resource.Retry(2*time.Minute, func() *resource.RetryError {
