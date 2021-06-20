@@ -50,7 +50,6 @@ For eg. `mkdir -p %APPDATA%/terraform.d/plugins/hashicorp.com/edu/zoom/0.2.0/win
 [OR]
 
 1. Manually move the file from current directory to destination directory <br>
-2. move binary `%APPDATA%/terraform.d/plugins/[architecture name]/`
 
 
 ## Working with terraform
