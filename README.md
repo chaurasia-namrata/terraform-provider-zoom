@@ -17,7 +17,7 @@ This terraform provider allows to perform Create ,Read ,Update, Delete, Import a
 
 ### API Authentication
 1. Go to [Zoom Marketplace](https://marketplace.zoom.us/)<br>
-2. Click on `Build App`. For our purpose we need to make a JWT App. <br>
+2. Click on `Develop -> Build App -> Choose your app type as JWT -> Create`. For our purpose we need to make a JWT App. <br>
 3. Follow this [Create JWT Zoom App](https://marketplace.zoom.us/docs/guides/build/jwt-app) website to make an app. <br>
 4. This app will provide us with the zoom_api_secret, zoom_api_key, and ZOOM_TOKEN which will be needed to configure our provider and make request. <br>
 
