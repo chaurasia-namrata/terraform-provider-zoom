@@ -1,8 +1,8 @@
 package zoom
 
 import (
-	"terraform-provider-zoom/client"
-	tkn "terraform-provider-zoom/token"
+	"terraform-provider-zoomus/client"
+	tkn "terraform-provider-zoomus/token"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
