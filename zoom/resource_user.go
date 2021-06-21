@@ -78,6 +78,7 @@ func resourceUser() *schema.Resource {
 			"status": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional :   true,
+				Computed:    true,
 			},
 			"id": &schema.Schema{
 				Type:        schema.TypeString,
@@ -89,23 +90,28 @@ func resourceUser() *schema.Resource {
 			},
 			"pmi": &schema.Schema{
 				Type:        schema.TypeInt,
+				Optional:    true,
 				Computed:    true,
 			},
 			"role_name": &schema.Schema{
 				Type:        schema.TypeString,
+				Optional:    true,
 				Computed:    true,
 			},
 			"department": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
+				Computed:    true,
 			},
 			"job_title": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
+				Computed:    true,
 			},
 			"location": &schema.Schema{
 				Type:        schema.TypeString,
 				Optional:    true,
+				Computed:    true,
 			},
 		},
 	}
@@ -207,9 +213,15 @@ func resourceUserUpdate(ctx context.Context,d *schema.ResourceData, m interface{
 	}
 
 	var err_deactivate error
+	var user_status string
 	status := d.Get("status").(string)
+	if(status=="active"){
+		user_status = "activate"
+	}else if(status=="inactive"){
+		user_status = "deactivate"
+	}
 	retryErrDeac := resource.Retry(2*time.Minute, func() *resource.RetryError {
-		if err_deactivate = apiClient.DeactivateUser(user.Email, status); err_deactivate != nil {
+		if err_deactivate = apiClient.DeactivateUser(user.Email, user_status); err_deactivate != nil {
 			if apiClient.IsRetry(err_deactivate) {
 				return resource.RetryableError(err_deactivate)
 			}
@@ -243,7 +255,6 @@ func resourceUserUpdate(ctx context.Context,d *schema.ResourceData, m interface{
 		return diag.FromErr(err)
 	}
 	return diags
-
 }
 
 func resourceUserDelete(ctx context.Context,d *schema.ResourceData, m interface{}) diag.Diagnostics {
@@ -268,7 +279,6 @@ func resourceUserDelete(ctx context.Context,d *schema.ResourceData, m interface{
 	if err != nil {
 		return diag.FromErr(err)
 	}
-
 	d.SetId("")
 	return diags
 }
