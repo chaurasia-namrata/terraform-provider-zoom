@@ -2,7 +2,7 @@ package zoom
 
 import (
    "context"
-   "terraform-provider-zoom/client"
+   "terraform-provider-zoomus/client"
    "github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
    "github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 )
