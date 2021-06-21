@@ -21,7 +21,7 @@ func init() {
 	os.Setenv("ZOOM_TOKEN", string(token))
 	testAccProvider = Provider()
 	testAccProviders = map[string]*schema.Provider{
-		"zoom": testAccProvider,
+		"zoomus": testAccProvider,
 	}
 }
 
