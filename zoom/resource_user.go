@@ -1,7 +1,7 @@
 package zoom
 
 import (
-	"terraform-provider-zoom/client"
+	"terraform-provider-zoomus/client"
 	"strings"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"fmt"
