@@ -21,10 +21,10 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"zoom_user": resourceUser(),
+			"zoomus_user": resourceUser(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"zoom_user": dataSourceUser(),
+			"zoomus_user": dataSourceUser(),
 		},
 		ConfigureFunc:  providerConfigure,
 	}
