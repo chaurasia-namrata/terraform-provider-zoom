@@ -2,7 +2,7 @@ terraform {
   required_providers {
     zoom = {
       version = "1.0.1"
-      source  = "CleverTap/zoom"
+      source  = "chaurasia-namrata/zoomus"
     }
   }
 }
