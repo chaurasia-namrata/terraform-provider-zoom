@@ -1,18 +1,18 @@
 terraform {
   required_providers {
-    zoom = {
+    zoomus = {
       version = "1.0.1"
       source  = "chaurasia-namrata/zoomus"
     }
   }
 }
 
-provider "zoom" { 
+provider "zoomus" {
   zoom_api_key    = "[ZOOM_API_KEY]"
   zoom_api_secret = "[ZOOM_API_SECRET]"
 }
 
-resource "zoom_user" "user1" {
+resource "zoomus_user" "user1" {
    email        = "[EMAIL_ID]"
    first_name   = "[USER_FIRST_NAME]"
    last_name    = "[USER_LAST_NAME]"

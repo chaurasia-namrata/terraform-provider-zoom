@@ -1,4 +1,4 @@
-module terraform-provider-zoom
+module terraform-provider-zoomus
 
 go 1.16
 
